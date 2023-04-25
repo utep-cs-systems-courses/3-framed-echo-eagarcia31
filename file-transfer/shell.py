@@ -2,8 +2,7 @@ import os
 import sys
 import re
 from readline import readline
-from piping import piping
-from redirect import redirect
+from fileClient import send_file, recieve_file
 
 while True:
     if 'PS1' in os.environ:
@@ -15,7 +14,7 @@ while True:
     if args[0] == "exit":
         os.write(2, "exiting shell...".encode())
         sys.exit(0)      
-    elif args[0] == "cd":
+    elif args[0] == "scp": #Need help here and below
         try:
             os.chdir(args[1])
         except:
