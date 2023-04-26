@@ -1,7 +1,7 @@
 import os
 import sys
 import re
-from readline import readline
+from readfile import readline
 from fileClient import send_file, recieve_file
 
 while True:
