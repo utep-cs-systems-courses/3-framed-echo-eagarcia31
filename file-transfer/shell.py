@@ -14,42 +14,14 @@ while True:
     if args[0] == "exit":
         os.write(2, "exiting shell...".encode())
         sys.exit(0)      
-    elif args[0] == "scp": #Need help here and below
-        try:
-            os.chdir(args[1])
-        except:
-            os.write(2, "No such directory\n".encode())
-        continue
-
-    rc = os.fork()    
-    wait = True
-    if '&' in args:
-        wait = False
-        args.remove('&')
-    if rc < 0:
-        os.write(2, "fork failed, exiting...".encode())
-        sys.exit(0)
-    elif rc == 0:  # child
-        if '|' in args:
-            pipe(args)
-            continue
-        if '<' in args:
-            redirect(args, '<')
-        if '>' in args:
-            redirect(args, '>')
-        try:
-            os.execve(args[0], args, os.environ)
-        except FileNotFoundError:
-            pass
-
-        for dir in re.split(":", os.environ['PATH']):  # try each directory in the path
-            program = "%s/%s" % (dir, args[0])
-            try:
-                os.execve(program, args, os.environ)  # try to exec program
-            except FileNotFoundError:  # ...expected
-                pass  # ...fail quietly
-        os.write(2, ("Could not exec: %s\n" % args[0]).encode())
-        sys.exit(1)
-            
-    elif wait:
-        childPidCode = os.wait()
+    elif args[0] == "scp": #Need to confirm with TA
+        if ":" in args[2]:
+            local_file = args[1]
+            remote_file = args[2][args[2].index(":") + 1:]
+            host = args[2][:args[2].index(":")]
+            send_file(local_file, remote_file, host)
+        else:
+            local_file = args[2]
+            remote_file = args[1][args[1].index(":") + 1:]
+            host = args[1][:args[1].index(":")]
+            recieve_file(local_file, remote_file, host)
