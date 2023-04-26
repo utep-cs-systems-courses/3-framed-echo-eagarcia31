@@ -82,7 +82,7 @@ while 1:
         
         elif ":" in data:
             msg = data[:msg_length]
-            data = data[msglength:]
+            data = data[msg_length:]
             full_msg += msg
             msg_length = 0
             fragmented = False
